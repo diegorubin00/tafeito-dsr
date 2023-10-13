@@ -1,12 +1,19 @@
 import React, { ReactNode }  from 'react';
 import './App.css';
+import AuthProvider from './provider/authProvider';
 
-function App(props:{children:ReactNode}) {
+
+import Routes from './routes';
+
+function App() {
 
   return (
     <div className="App">
-      {props.children}
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </div>
   );
 }
+
 export default App;
