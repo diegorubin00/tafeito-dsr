@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
+// import CardHeader from '@mui/material/CardHeader';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
@@ -11,19 +12,24 @@ import { FormControl, InputLabel,
 import { VisibilityOff, Visibility } from '@mui/icons-material'
 
 import {CustomizedCardHeader} from './styles';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
-  
+    
+
   const [isButtonActive, setIsButtonActive] = useState(true);
   const [username, setUsername] = useState<string|null>(null)
   const [password, setPassword] = useState<string|null>(null)
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string|null>(null)
 
+  const navigate = useNavigate();
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   }
-
+  
   useEffect(() => {
     if(username !== null && username !== '' &&
        password !== null && password !== '') {
@@ -32,7 +38,6 @@ const Login = () => {
         setIsButtonActive(true);
       }
   }, [username, password]);
-
   const postLogin = () => {
     const requestOptions = {
       method: 'POST',
@@ -59,13 +64,13 @@ const Login = () => {
         } else if(data.responseStatus === 400) {
           setErrorMessage('Requisição inválida!')
         } else if(data.responseStatus === 200) {
-          alert('Requisição válida!')
+          navigate('/tarefas');
         } 
       })
       .catch(error => setErrorMessage('Erro no servidor, tente novamente em alguns minutos!'));
   }
   return (
-<Box sx={{
+      <Box sx={{
         width: '100%',
         height: '100%',
         alignItems: 'center',
@@ -80,7 +85,7 @@ const Login = () => {
           />
           <CardContent>
             <Box py={1}>
-            <TextField
+              <TextField
                 onChange={(newValue) => {
                   setUsername(newValue.target.value);
                 }}
@@ -114,20 +119,19 @@ const Login = () => {
             </Box>
           </CardContent>
           <CardActions>
-          <Box sx={{
+            <Box sx={{
               display:'flex',
               flexDirection:'row',
               width:'100%',
               flexWrap: 'wrap'
             }}>
-
               <Box width={'100%'}>
                 {errorMessage && <Typography color={'red'}>
                   {errorMessage}
                 </Typography>}
               </Box>
               <Box width={'100%'}>
-
+                
               <Button
                 sx={{
                   width: '100%'
@@ -139,9 +143,6 @@ const Login = () => {
           </CardActions>
         </Card>
       </Box>
-
-)
+  )
 }
-
-
 export default Login;
